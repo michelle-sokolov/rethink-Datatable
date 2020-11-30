@@ -65,4 +65,9 @@ export class AppComponent {
     // Whenever the filter changes, always go back to the first page
     this.table.offset = 0;
   }
+  // clear search field
+  clearSearch() {
+    this.queryText = '';
+    this.filteredRows = this.rows;
+  }
 }

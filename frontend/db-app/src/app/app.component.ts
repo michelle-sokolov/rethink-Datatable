@@ -8,16 +8,30 @@ import * as data from './school-data.json';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
+
   schoolData: any;
   finalData: any;
-  loading: Boolean;
+  loading: boolean;
   rows: any;
   filteredRows: any;
-  title = 'db-app';
+  // initialize columns
+  columns = [
+    { name: 'School Name', prop: 'schoolName' },
+    { name: 'CDS Code', prop: 'cdsCode' },
+    { name: 'Grade Config', prop: 'gradeConfig' },
+    { name: 'Type', prop: 'type' },
+  ];
+  filterColumns = ['cdsCode', 'schoolName', 'gradeConfig', 'type'];
+  defaultSort = [{ prop: 'schoolName', dir: 'asc' }];
+
+  // tslint:disable-next-line: use-lifecycle-interface
+  // tslint:disable-next-line: typedef
   ngOnInit() {
     console.log('data here ', data);
-    this.fetchData;
+    this.fetchData();
   }
+  // tslint:disable-next-line: typedef
   fetchData() {
     this.schoolData = data;
     this.finalData = this.schoolData.default;

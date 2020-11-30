@@ -11,8 +11,19 @@ const connectDB = async () => {
 
 
     con.connect(function (err) {
-        if (err) throw err;
-        console.log("Connected!");
+        if (err) {
+            throw err;
+        }
+        else {
+            con.query("SELECT * FROM schools.`school-data`;", function (err, result, fields) {
+                // if any error while executing above query, throw error
+                if (err) throw err;
+                // if there is no error, you have the result
+                var data = result;
+                console.log(data)
+            });
+        }
+
     });
 }
 module.exports = connectDB;

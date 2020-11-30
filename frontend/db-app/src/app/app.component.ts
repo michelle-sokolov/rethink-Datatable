@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as data from './school-data.json';
 
 @Component({
   selector: 'app-root',

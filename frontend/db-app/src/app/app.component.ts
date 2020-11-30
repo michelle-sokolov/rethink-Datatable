@@ -14,6 +14,7 @@ export class AppComponent {
   finalData: any;
   loading: boolean;
   rows: any;
+  queryText: '';
   filteredRows: any;
   // initialize columns
   columns = [
@@ -39,5 +40,29 @@ export class AppComponent {
     this.loading = true;
     this.rows = this.finalData;
     this.filteredRows = this.finalData;
+  }
+  // search function
+  filterRows($event) {
+    const val = $event.target.value.toLowerCase();
+    // tslint:disable-next-line: triple-equals
+    if (val.length === 0) {
+      this.filteredRows = this.rows;
+    }
+    if (val.length < 3) {
+      return;
+    }
+    // filter only intialized after query length is greater than 3
+    this.filteredRows = this.rows.filter((row: any) => {
+      let fullTextSearch = '';
+      for (const filterColumn of this.filterColumns) {
+        fullTextSearch = fullTextSearch + row[filterColumn];
+      }
+      fullTextSearch = fullTextSearch.toLocaleLowerCase(); // normalize query
+      let valLowerCase = val.toLowerCase(); // normalize query
+      return (fullTextSearch.indexOf(valLowerCase) >= 0);
+
+    });
+    // Whenever the filter changes, always go back to the first page
+    this.table.offset = 0;
   }
 }

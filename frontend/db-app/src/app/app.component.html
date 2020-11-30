@@ -1,3 +1,5 @@
+<input style="float: left" type="text" [(ngModel)]="queryText" (input)="filterRows($event)" />
+
 <ngx-datatable style="clear: both;width: 35%;" #table class="material fullscreen" headerHeight="50" footerHeight="50"
   [rowHeight]="'auto'" [rows]="filteredRows" [columns]="columns" [limit]="10" [sorts]="defaultSort">
 </ngx-datatable>

@@ -47,10 +47,10 @@ export class AppComponent {
     if (val.length === 0) {
       this.filteredRows = this.rows;
     }
-    if (val.length < 3) {
+    // filter only intialized after query length is greater than 1
+    if (val.length < 1) {
       return;
     }
-    // filter only intialized after query length is greater than 3
     this.filteredRows = this.rows.filter((row: any) => {
       let fullTextSearch = '';
       for (const filterColumn of this.filterColumns) {

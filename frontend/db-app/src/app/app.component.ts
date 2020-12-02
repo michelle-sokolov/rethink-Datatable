@@ -1,10 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatatableComponent } from '@swimlane/ngx-datatable';
-import * as data from './school-data.json';
-import { map, tap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from "rxjs";
-// import axios from "axios";
 import { SchoolsService } from './app.services';
 @Component({
   selector: 'app-root',
@@ -12,44 +7,38 @@ import { SchoolsService } from './app.services';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  // tslint:disable-next-line: member-access
   @ViewChild(DatatableComponent, { static: false }) table: DatatableComponent;
 
-  schoolData: any;
-  finalData: any;
-  loading: boolean;
-  rows: any;
-  queryText: '';
-  queryURL = 'http://localhost:3000/api/products';
-  filteredRows: any;
-  // initialize columns
-  columns = [
+  public schoolData: any;
+  public finalData: any;
+  public loading: boolean;
+  public rows: any;
+  public queryText: '';
+  public filteredRows: any;
+  // define columns
+  public columns = [
     { name: 'School Name', prop: 'schoolName' },
     { name: 'CDS Code', prop: 'cdsCode' },
     { name: 'Grade Config', prop: 'gradeConfig' },
     { name: 'Type', prop: 'type' },
   ];
-  filterColumns = ['cdsCode', 'schoolName', 'gradeConfig', 'type'];
-  defaultSort = [{ prop: 'schoolName', dir: 'asc' }];
-  dataFile: Object;
-  constructor(public httpClient: HttpClient, public schoolsService: SchoolsService,
+  public filterColumns = ['cdsCode', 'schoolName', 'gradeConfig', 'type'];
+  public defaultSort = [{ prop: 'schoolName', dir: 'asc' }];
+  public dataFile: Object;
+  constructor(public schoolsService: SchoolsService,
   ) { }
-  // tslint:disable-next-line: use-lifecycle-interface
-  // tslint:disable-next-line: typedef
+
   ngOnInit() {
-    // console.log('data here ', data);
-    this.fetchData();
-    // this.fetchData2();
     this.fetchAll();
   }
-  // tslint:disable-next-line: typedef
-  fetchData() {
-    this.schoolData = data;
-    this.finalData = this.schoolData.default;
-    // console.log('data ', this.finalData);
-    this.loading = true;
-    this.rows = this.finalData;
-    this.filteredRows = this.finalData;
-
+  // GET data
+  fetchAll() {
+    this.schoolsService.getNews().subscribe((data) => {
+      console.log('data: ', Object.values(data)[0]);
+      this.rows = Object.values(data)[0];
+      this.filteredRows = this.rows;
+    });
   }
   // search function
   filterRows($event) {
@@ -72,7 +61,6 @@ export class AppComponent {
       return (fullTextSearch.indexOf(valLowerCase) >= 0);
 
     });
-    // Whenever the filter changes, always go back to the first page
     this.table.offset = 0;
   }
   // clear search field
@@ -80,30 +68,4 @@ export class AppComponent {
     this.queryText = '';
     this.filteredRows = this.rows;
   }
-  /*getSchools() {
-    return axios.get(this.queryURL);
-  }*/
-  fetchAll() {
-
-    this.schoolsService.getNews().subscribe((data) => {
-      console.log(data);
-      // this.articles = data['articles'];
-    });
-  }
-  /*
-getSchools() {
-console.log('getSchools()'); // todo: comment out logging as needed for prod
-return this.loadSchools().pipe(map(this.processSchools, this));
-}
-
-private loadSchools() {
-console.log('loadSchools() with url: ', 'http://localhost:3000/api/products');
-return this.httpClient.get('http://localhost:3000/api/products');
-}
-
-processSchools(data: any) {
-console.log('processSchools() with', data.length, 'rows.');
-console.log('local ', data)
-return data;
-}*/
 }

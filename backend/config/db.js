@@ -20,10 +20,11 @@ const connectDB = async () => {
                 if (err) throw err;
                 // if there is no error, you have the result
                 var data = result;
-                console.log(data)
+                // console.log(data)
             });
         }
 
     });
 }
+
 module.exports = connectDB;

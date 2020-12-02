@@ -5,4 +5,4 @@ Mock Datatable. To run frontend:
 
 To run backend:
 - run 'npm install'
-- run 'node server.js'
+- run 'node index.js'
